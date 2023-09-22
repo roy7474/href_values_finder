@@ -37,19 +37,41 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-url = input('Enter - ')
+url = 'http://py4e-data.dr-chuck.net/known_by_Fikret.html' #input('Enter - ')
+# iterations = input('Please enter the number of iterations or how many times you would like to repeat this process: ')
+'''
+# This function extracts the link from the url
 def last_name_extractor(x):
     html = urllib.request.urlopen(url, context=ctx).read()
     soup = BeautifulSoup(html, 'html.parser')
 
-# iterations = input('Please enter the number of iterations or how many times you would like to repeat this process: ')
 # Retrieve all of the anchor tags
     tags = soup('a')
     for tag in tags:
         links_lst.append(tag.get('href'))
     link_desired = links_lst[2]
+    last_link = str(link_desired)
+    last_name = re.findall(r'by_(*?)', last_link)
+    print(link_desired, last_name)
 
-#retrive the 3rd link
-    return(link_desired)                                         # count numbers start at 0
+#retrive the 3rd link for the list iteration
+    return(last_name)                                         # count numbers start at 0
+
 linking = last_name_extractor(url)
-print('The result is: ', linking)
+    
+print('The result is: ', linking)'''
+
+html = urllib.request.urlopen(url, context=ctx).read()
+soup = BeautifulSoup(html, 'html.parser')
+
+# Retrieve all of the anchor tags
+tags = soup('a')
+for tag in tags:
+    links_lst.append(tag.get('href'))
+link_desired = links_lst[2]
+last_link = str(link_desired)
+pattern = r'by_([A-Za-z]\S)'                  #r'by_(.*?)\.html\.'
+last_name = re.findall(pattern, link_desired)
+print(last_name)
+print(last_link)
+
