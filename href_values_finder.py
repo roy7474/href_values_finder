@@ -36,13 +36,12 @@ import re
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
-url = 'http://py4e-data.dr-chuck.net/known_by_Fikret.html' #input('Enter - ')
-# iterations = input('Please enter the number of iterations or how many times you would like to repeat this process: ')
-iterations = 4
-
+url = input('Enter the url: ') #  
+iterations = int(input('Enter the number of iterations: '))
+url_position = int(input('Enter the position of the link that you need: '))
 # This function extracts the link from the url
-
-while 0 < iterations:
+last_name= []
+while 0 < (iterations + 1):   # +1 since I need to extract the first last name
     
     html = urllib.request.urlopen(url, context=ctx).read()
     soup = BeautifulSoup(html, 'html.parser')
@@ -52,17 +51,22 @@ while 0 < iterations:
     tags = soup('a')
     for tag in tags:
         links_lst.append(tag.get('href'))
-    link_desired = links_lst[2] 
-    pattern = r'by_([A-Za-z]+)'                  # Pattern before last name
-    last_name = re.findall(pattern, link_desired)
-    print(link_desired)
+    link_desired = links_lst[url_position - 1]              # extract the link
+    pattern = r'by_([A-Za-z]+)'                             # Pattern before last name
+    # Add last name to the list
+    last_name.append(re.findall(pattern, url))
+    #print(link_desired)
+   
+
     
 
 #print the last name without quotation marks
-    for item in last_name:
-        print(item)
+    
     url = link_desired
     iterations -= 1
+for names in last_name:
+    for name in names:
+        print(name)
 
 
 
