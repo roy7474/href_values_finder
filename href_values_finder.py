@@ -31,47 +31,39 @@ import urllib.request, urllib.parse, urllib.error
 from bs4 import BeautifulSoup
 import ssl
 import re
-links_lst = []
+
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
-
 url = 'http://py4e-data.dr-chuck.net/known_by_Fikret.html' #input('Enter - ')
 # iterations = input('Please enter the number of iterations or how many times you would like to repeat this process: ')
-'''
+iterations = 4
+
 # This function extracts the link from the url
-def last_name_extractor(x):
+
+while 0 < iterations:
+    
     html = urllib.request.urlopen(url, context=ctx).read()
     soup = BeautifulSoup(html, 'html.parser')
+    links_lst = []
 
 # Retrieve all of the anchor tags
     tags = soup('a')
     for tag in tags:
         links_lst.append(tag.get('href'))
-    link_desired = links_lst[2]
-    last_link = str(link_desired)
-    last_name = re.findall(r'by_(*?)', last_link)
-    print(link_desired, last_name)
-
-#retrive the 3rd link for the list iteration
-    return(last_name)                                         # count numbers start at 0
-
-linking = last_name_extractor(url)
+    link_desired = links_lst[2] 
+    pattern = r'by_([A-Za-z]+)'                  # Pattern before last name
+    last_name = re.findall(pattern, link_desired)
+    print(link_desired)
     
-print('The result is: ', linking)'''
 
-html = urllib.request.urlopen(url, context=ctx).read()
-soup = BeautifulSoup(html, 'html.parser')
+#print the last name without quotation marks
+    for item in last_name:
+        print(item)
+    url = link_desired
+    iterations -= 1
 
-# Retrieve all of the anchor tags
-tags = soup('a')
-for tag in tags:
-    links_lst.append(tag.get('href'))
-link_desired = links_lst[2]
-last_link = str(link_desired)
-pattern = r'by_([A-Za-z]\S)'                  #r'by_(.*?)\.html\.'
-last_name = re.findall(pattern, link_desired)
-print(last_name)
-print(last_link)
+
+
 
