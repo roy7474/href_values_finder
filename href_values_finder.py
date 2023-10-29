@@ -55,15 +55,10 @@ while 0 < (iterations + 1):   # +1 since I need to extract the first last name
     pattern = r'by_([A-Za-z]+)'                             # Pattern before last name
     # Add last name to the list
     last_name.append(re.findall(pattern, url))
-    #print(link_desired)
-   
-
-    
-
-#print the last name without quotation marks
-    
     url = link_desired
     iterations -= 1
+
+# print the last name without quotation marks
 for names in last_name:
     for name in names:
         print(name)
